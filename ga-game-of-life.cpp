@@ -78,20 +78,20 @@ class gameOfLife : public GeneticAlgorithm{
     
 };
 
-/*Функция перевода числа в двоичное число типа строка*/
+/*The function of converting a number to a binary number of the string type*/
 string Chromosome::conversion_binary(int number) {
     bitset<CHROMOSOME_LIMIT> bitset = number;
     string binary_number = bitset.to_string<char, char_traits<char>, allocator<char> >();
     return binary_number;
 }
 
-/*Функция перевода двоичного числа типа строка в десятиричное число числового типа*/
+/*The function of converting a binary number of the string type into a decimal number of the numeric type*/
 int Chromosome::binaryToDecimal(string binary_number) { 
     int dec = stoi(binary_number, nullptr, 2);
     return dec;
 }
 
-/*Функция вычисления хромосом новой клетки — скрещивание и мутация в генах*/
+/*The function of calculating the chromosomes of a new cell is crossing and mutation in genes*/
 int GeneticAlgorithm::chromosome(int cell_parent_1, int cell_parent_2) {
     string binary_cell_1 = conversion_binary(cell_parent_1);
     string binary_cell_2 = conversion_binary(cell_parent_2);
@@ -104,7 +104,7 @@ int GeneticAlgorithm::chromosome(int cell_parent_1, int cell_parent_2) {
     return new_chromosome;
 }
 
-/*Функция скрещивания — двухточечное скрещивание*/
+/*The crossing function is a two—point crossing*/
 int GeneticAlgorithm::crossing(string parent_1, string parent_2) {
     string new_cell_1 = "";
     string new_cell_2 = "";
@@ -137,7 +137,7 @@ int GeneticAlgorithm::crossing(string parent_1, string parent_2) {
     else return dec_cell_2;
 }
 
-/*Функция мутации — мутация обращением*/
+/*Mutation function — mutation by conversion*/
 int GeneticAlgorithm::mutation(string new_cell) {
     random_device rd;        
     mt19937_64 gen(rd());
@@ -167,7 +167,7 @@ int GeneticAlgorithm::mutation(string new_cell) {
         
 }
 
-/*Функция определения координат живых соседних клеток — окрестность Мура*/
+/*The function of determining the coordinates of living neighboring cells is the Moore neighborhood*/
 void GeneticAlgorithm::read_point_neighbors(int nb[][2], int x, int y) {
     int i, j;
     int k = 0;
@@ -181,7 +181,7 @@ void GeneticAlgorithm::read_point_neighbors(int nb[][2], int x, int y) {
     }
 }
 
-/*Функция отбора родителей клетки и получение потомка*/
+/*The function of selecting the parents of a cell and obtaining a descendant*/
 void GeneticAlgorithm::new_cell(Chromosome new_board[BOARD_WIDTH][BOARD_HEIGHT], 
                  Chromosome board[BOARD_WIDTH][BOARD_HEIGHT], int x, int y) {
     GeneticAlgorithm cell_1, cell_2, cell_3;
@@ -208,7 +208,7 @@ void GeneticAlgorithm::new_cell(Chromosome new_board[BOARD_WIDTH][BOARD_HEIGHT],
     new_board[x][y].SetCellEnergy(chromosome(max_cell, min_cell));
 }
 
-/*Функция, выполняемая при перенаселении клеток или при одиночестве*/
+/*A function performed when cells are overpopulated or when alone*/
 void GeneticAlgorithm::overpopulation_or_loneliness(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT], 
                                                     int x, int y, int kol) {
     if (kol > 3) board[x][y].SetCellEnergy(board[x][y].GetCellEnergy() - (ENERGY/5));
@@ -218,7 +218,7 @@ void GeneticAlgorithm::overpopulation_or_loneliness(Chromosome board[BOARD_WIDTH
     if (board[x][y].GetCellEnergy() < 0) board[x][y].SetCellEnergy(0);
 }
 
-/*Функция определения координат живых соседних клеток — окрестность Мура*/
+/*The function of determining the coordinates of living neighboring cells is the Moore neighborhood*/
 void gameOfLife::read_point_neighbors(int nb[][2], int x, int y) {
     int k = 0;
     for (int i = x - 1; i <= x + 1; i++) {
@@ -232,7 +232,7 @@ void gameOfLife::read_point_neighbors(int nb[][2], int x, int y) {
     }
 }
     
-/*Функция подсчета количества живых соседних клеток относительно выбранной*/
+/*The function of counting the number of living neighboring cells relative to the selected one*/
 int gameOfLife::count_live_neighbors(Chromosome board[][BOARD_HEIGHT], int x, int y) {
     gameOfLife count;
     count.SetQuantity(0);
@@ -249,7 +249,7 @@ int gameOfLife::count_live_neighbors(Chromosome board[][BOARD_HEIGHT], int x, in
     return count.GetQuantity();
 }
 
-/*Функция заполнения клетками псевдорандомно первого поколения*/
+/*The function of filling with pseudorandom cells of the first generation*/
 void gameOfLife::init_board(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT]) {
     random_device rd;
     mt19937_64 gen(rd());
@@ -263,7 +263,7 @@ void gameOfLife::init_board(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT]) {
     }
 }
 
-/*Функция вывода доски игры на консоль*/
+/*The function of displaying the game board on the console*/
 void gameOfLife::print_board(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT]) {
     for (int i = 0; i < BOARD_WIDTH; i++) {
         for (int j = 0; j < BOARD_HEIGHT; j++) {
@@ -285,7 +285,7 @@ void gameOfLife::print_board(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT]) {
     }
 }
 
-/*Функция подсчета живых клеток на доске*/
+/*The function of counting live cells on the board*/
 int gameOfLife::get_live_count(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT]) {
     gameOfLife count;
     count.SetQuantity(0);
@@ -297,7 +297,7 @@ int gameOfLife::get_live_count(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT]) {
     return count.GetQuantity();
 }
 
-/*Функция создания нового поколения*/
+/*The function of creating a new generation*/
 void gameOfLife::next_generation(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT], 
                                  Chromosome prev_board[BOARD_WIDTH][BOARD_HEIGHT]) {
     gameOfLife live_nb;
@@ -314,7 +314,7 @@ void gameOfLife::next_generation(Chromosome board[BOARD_WIDTH][BOARD_HEIGHT],
     }
 }
 
-/*Функция сохранения предыдущего состояния доски — предыдущего поколения*/
+/*The function of saving the previous state of the board — the previous generation*/
 void gameOfLife::copy_board(Chromosome src[BOARD_WIDTH][BOARD_HEIGHT], 
                             Chromosome dest[BOARD_WIDTH][BOARD_HEIGHT]) {
     for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -324,7 +324,7 @@ void gameOfLife::copy_board(Chromosome src[BOARD_WIDTH][BOARD_HEIGHT],
     }
 }
 
-/*Функция определения изменений на доске клеток*/
+/*The function of detecting changes on the board of cells*/
 int gameOfLife::cmp_board(Chromosome board_1[BOARD_WIDTH][BOARD_HEIGHT], 
                           Chromosome board_2[BOARD_WIDTH][BOARD_HEIGHT]) {
     for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -336,7 +336,7 @@ int gameOfLife::cmp_board(Chromosome board_1[BOARD_WIDTH][BOARD_HEIGHT],
     return 0;
 }
 
-/*Функция запуска игры "Жизнь"*/
+/*The launch function of the game "Life"*/
 void gameOfLife::GameStart() {
     Chromosome board[BOARD_WIDTH][BOARD_HEIGHT];
     Chromosome prev_board[BOARD_WIDTH][BOARD_HEIGHT];
